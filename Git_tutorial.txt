@@ -1,0 +1,28 @@
+In our case, I think that the proper way to proceed to perform a git push
+is the following:
+
+1) git pull
+It's important to do te pull BEFORE doing the add/commit/push
+If the we manage to do the pull, than the push will go smoothly. In this case the
+procedure stops here!
+
+So, if the pull works without errors, we can do the add/commit/push, otherwise we need
+to follow the next steps.
+
+2) git stash save
+Now our local changes, which creates the merging conflict, are saved somewhere
+
+3) git pull
+Now the pull should succeed, since we've stashed our local changes.
+
+4) git stash pop
+
+5) Manage manually the conflicts between our local changes that we have just "popped"
+
+6) git add/commit/push (FINALLY!)
+
+7) git stash clear
+delete our local changes, we don't want them once we have pushed!
+
+
+PS: I am not so sure that will work always, but for now I think that should be fine
