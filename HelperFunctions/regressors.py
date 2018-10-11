@@ -1,25 +1,34 @@
+#Small toolbox to use in the project, this is more flexible w.r.t the 6 functions that
+#we need to deliver. We can implement here our regressors
+
 import numpy as np
 from compute_losses import *
 from compute_gradients import *
+
+
+def grid_search(y, tx, w0, w1, compute_loss=compute_loss_MSE):
+    """Algorithm for grid search."""
+    losses = np.zeros((len(w0), len(w1)))
+    for i in range(len(w0)):
+        for j in range(len(w1)):
+            losses[i,j] = compute_loss( y, tx, np.array([ w0[i],w1[j] ]) )        
+    return losses
 
 
 def least_squares(y, tx):
     """calculate the least squares solution."""
     w = np.linalg.solve(tx.T@tx, tx.T@y)
     e = y - tx@w
-    return w, np.mean(e**2)/2
-
+    return w , np.mean(e**2)/2
 
 
 def ridge_regression(y, tx, lambda_):
     """implement ridge regression."""
     w = np.linalg.solve(tx.T@tx + lambda_*2*y.shape[0]*np.eye(tx.shape[1]), tx.T@y)
-    loss = compute_loss_MSE(y, tx, w)
-    return w, loss   
+    return w   
 
 
-
-def least_squares_GD(y, tx, initial_w, max_iters, gamma, 
+def gradient_descent(y, tx, initial_w, max_iters, gamma, 
                 compute_loss=compute_loss_MSE, compute_gradient=compute_gradient_MSE):
     """Gradient descent algorithm."""
     # Define parameters to store w and loss
@@ -35,7 +44,7 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma,
         print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
               bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
-    return ws, losses
+    return losses, ws
 
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
@@ -64,7 +73,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
 
 
-def least_squares_SGD( y, tx, initial_w, batch_size, max_iters, gamma,
+def stochastic_gradient_descent( y, tx, initial_w, batch_size, max_iters, gamma,
          compute_loss=compute_loss_MSE, compute_gradient=compute_gradient_MSE):
     # Define parameters to store w and loss
     ws = [initial_w]
@@ -82,4 +91,4 @@ def least_squares_SGD( y, tx, initial_w, batch_size, max_iters, gamma,
         print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
               bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
-    return ws, losses
+    return losses, ws
