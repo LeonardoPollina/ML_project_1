@@ -5,12 +5,14 @@ import numpy as np
 ################################################################################
 
 def compute_loss_MSE(y, tx, w):
-    """Calculate the loss using MSE
-    """
+    """Calculate the loss using MSE."""
+
     e = y - tx.dot(w)
     return np.mean(e**2)/2
 
 def compute_gradient_MSE(y, tx, w):
+    """Calculate gradient of the loss MSE."""
+
     return (-1/y.shape[0]) * (tx.T) @ (y - tx @ w)
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
@@ -47,6 +49,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     """Gradient descent algorithm."""
 
+    # Define parameters to store w and loss
     w = initial_w
     loss = 0
     for n_iter in range(max_iters):
@@ -60,6 +63,8 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
 
 
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
+    """Stochastic gradient descent algorithm."""
+
     # Define parameters to store w and loss
     w = initial_w
     loss = 0
@@ -95,6 +100,7 @@ def least_squares(y, tx):
 
 def ridge_regression(y, tx, lambda_):
     """Compute ridge regression."""
+    
     w = np.linalg.solve(tx.T@tx + lambda_*2*y.shape[0]*np.eye(tx.shape[1]), tx.T@y)
     loss = compute_loss_MSE(y, tx, w)
     return w, loss   

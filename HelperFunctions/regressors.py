@@ -7,7 +7,9 @@ from compute_gradients import *
 
 
 def grid_search(y, tx, w0, w1, compute_loss=compute_loss_MSE):
-    """Algorithm for grid search."""
+    """Algorithm for grid search.
+    
+    return losses"""
     losses = np.zeros((len(w0), len(w1)))
     for i in range(len(w0)):
         for j in range(len(w1)):
@@ -16,21 +18,27 @@ def grid_search(y, tx, w0, w1, compute_loss=compute_loss_MSE):
 
 
 def least_squares(y, tx):
-    """calculate the least squares solution."""
+    """calculate the least squares solution.
+    
+    return w, lossMSE"""
     w = np.linalg.solve(tx.T@tx, tx.T@y)
     e = y - tx@w
     return w , np.mean(e**2)/2
 
 
 def ridge_regression(y, tx, lambda_):
-    """implement ridge regression."""
+    """implement ridge regression.
+    
+    return w"""
     w = np.linalg.solve(tx.T@tx + lambda_*2*y.shape[0]*np.eye(tx.shape[1]), tx.T@y)
     return w   
 
 
 def gradient_descent(y, tx, initial_w, max_iters, gamma, 
                 compute_loss=compute_loss_MSE, compute_gradient=compute_gradient_MSE):
-    """Gradient descent algorithm."""
+    """Gradient descent algorithm.
+    
+    return ws, losses"""
     # Define parameters to store w and loss
     ws = [initial_w]
     losses = []
@@ -44,7 +52,7 @@ def gradient_descent(y, tx, initial_w, max_iters, gamma,
         print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
               bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
-    return losses, ws
+    return ws, losses
 
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
@@ -75,6 +83,9 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
 
 def stochastic_gradient_descent( y, tx, initial_w, batch_size, max_iters, gamma,
          compute_loss=compute_loss_MSE, compute_gradient=compute_gradient_MSE):
+    """SDG algorithm
+
+    return ws, losses"""
     # Define parameters to store w and loss
     ws = [initial_w]
     losses = []
@@ -91,4 +102,4 @@ def stochastic_gradient_descent( y, tx, initial_w, batch_size, max_iters, gamma,
         print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
               bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
-    return losses, ws
+    return ws, losses
