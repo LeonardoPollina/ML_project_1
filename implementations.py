@@ -48,8 +48,11 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     """Gradient descent algorithm."""
+<<<<<<< Updated upstream
 
     # Define parameters to store w and loss
+=======
+>>>>>>> Stashed changes
     w = initial_w
     loss = 0
     for n_iter in range(max_iters):
