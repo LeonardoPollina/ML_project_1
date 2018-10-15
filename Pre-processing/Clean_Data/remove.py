@@ -3,11 +3,13 @@ import matplotlib.pyplot as plt
 
 from counters import *
 
-def removeLines(data, idxCol, invalidValue):
-    '''Remove the lines in data that contains invalidValue in position idxCol'''
+def removeLines(data, y, idxCol, invalidValue):
+    '''Remove the lines in data that contains invalidValue in position idxCol.
+    Note that we need to remove the elements also from the vector y, to be consistent.'''
     idx = np.where(data[:,idxCol] == invalidValue)
     data = np.delete(data,idx,axis=0)
-    return data
+    yret = np.delete(y, idx, axis=0)
+    return data, yret
 
 def removeColumns(data,threshold):
     ''' Remove the columns containing more than threshold (in %) of invalid value.'''
