@@ -34,25 +34,25 @@ def ridge_regression(y, tx, lambda_):
     return w   
 
 
-def gradient_descent(y, tx, initial_w, max_iters, gamma, 
+def gradient_descent(y, tx, initial_w, max_iters, gamma, threshold = 1e-6, 
                 compute_loss=compute_loss_MSE, compute_gradient=compute_gradient_MSE):
     """Gradient descent algorithm.
     
-    return ws, losses"""
+    return w, loss"""
     # Define parameters to store w and loss
-    ws = [initial_w]
-    losses = []
+    loss0 = 0
     w = initial_w
     for n_iter in range(max_iters):
         loss = compute_loss(y, tx, w)
         grad = compute_gradient(y, tx, w)
         w = w - gamma*grad
-        ws.append(w)
-        losses.append(loss)
-        print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
-              bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
+        if n_iter % 10 == 0:
+            print("Gradient Descent({bi}/{ti}): loss={l}".format(bi=n_iter, ti=max_iters - 1, l=loss))
+        if np.abs(loss - loss0) < threshold:
+              return w, loss
+        loss0 = loss
 
-    return ws, losses
+    return w, loss
 
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
