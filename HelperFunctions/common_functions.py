@@ -1,12 +1,24 @@
 import numpy as np
 
-def standardize(x):
+def standardize(xOriginal):
     """Standardize the original data set."""
-    mean_x = np.mean(x)
-    x = x - mean_x
-    std_x = np.std(x)
+    mean_x = np.mean(xOriginal,axis=0)
+    x = xOriginal - mean_x
+    std_x = np.std(x,axis=0)
+    if (std_x==0).any():
+        print('Substitute 0 with 0.0001')
+        std_x[std_x == 0] = 1e-4
     x = x / std_x
     return x, mean_x, std_x
+
+def sample_data(y, x, seed, size_samples):
+    """sample from dataset."""
+    np.random.seed(seed)
+    num_observations = y.shape[0]
+    random_permuted_indices = np.random.permutation(num_observations)
+    y = y[random_permuted_indices]
+    x = x[random_permuted_indices]
+    return y[:size_samples], x[:size_samples]
     
 
 def split_data(x, y, ratio, seed=1):
