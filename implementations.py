@@ -101,7 +101,7 @@ def least_squares(y, tx):
 def ridge_regression(y, tx, lambda_):
     """Compute ridge regression."""
     
-    w = np.linalg.solve(tx.T@tx + lambda_*2*y.shape[0]*np.eye(tx.shape[1]), tx.T@y)
+    w = np.linalg.solve(tx.T@tx + lambda_*2*y.shape[0]*np.eye(tx.shape[1]), tx.T@y.T)
     loss = compute_loss_MSE(y, tx, w)
     return w, loss   
 
