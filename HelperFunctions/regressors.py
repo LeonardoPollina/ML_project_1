@@ -51,8 +51,8 @@ def gradient_descent(y, tx, initial_w, max_iters, gamma, threshold = 1e-6,
         if np.abs(loss - loss0) < threshold:
               return w, loss
         loss0 = loss
-
-    return w, loss
+        
+    return loss,w
 
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
@@ -87,19 +87,19 @@ def stochastic_gradient_descent( y, tx, initial_w, batch_size, max_iters, gamma,
 
     return ws, losses"""
     # Define parameters to store w and loss
-    ws = [initial_w]
-    losses = []
+    #ws = [initial_w] LP
+    #losses = [] LP
     w = initial_w
     for n_iter in range(max_iters):
-        batch = next(batch_iter(y, tx, 32))
+        batch = next(batch_iter(y, tx, batch_size))
         minibatch_y, minibatch_tx = batch[0], batch[1]
         grad = compute_gradient(minibatch_y, minibatch_tx, w)
         w = w - gamma*grad
-        ws.append(w)
+        # ws.append(w) LP
         #for the loss I use the whole dataset
         loss = compute_loss(y, tx, w)
-        losses.append(loss)
-        print("Gradient Descent({bi}/{ti}): loss={l}, w0={w0}, w1={w1}".format(
-              bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
-
-    return ws, losses
+        #losses.append(loss) LP
+        if n_iter%10==0:
+            print("Stochastic gradient Descent({bi}/{ti}): loss={l}".format(
+              bi=n_iter, ti=max_iters - 1, l=loss))
+    return loss, w
