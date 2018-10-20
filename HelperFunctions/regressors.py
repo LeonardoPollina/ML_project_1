@@ -22,8 +22,7 @@ def least_squares(y, tx):
     
     return w, lossMSE"""
     w = np.linalg.solve(tx.T@tx, tx.T@y)
-    e = y - tx@w
-    return w , np.mean(e**2)/2
+    return w 
 
 
 def ridge_regression(y, tx, lambda_):
