@@ -16,7 +16,7 @@ def standardize(xOriginal, mean=-1, std=-1):
             print('Substitute 0 with 0.0001')
             std_x[std_x == 0] = 1e-4
         x = x / std_x
-    else 
+    else:
         x = xOriginal - mean
         x = x / std
         mean_x,std_x = mean,std
@@ -34,8 +34,6 @@ def sample_data(y, x, seed, size_samples):
 
 def split_data(x, y, ratio, seed=1):
     """
-    TODO: GENERALIZE WHEN X IS A MATRIX
-    
     split the dataset based on the split ratio. If ratio is 0.8 
     you will have 80% of your data set dedicated to training 
     and the rest dedicated to testing
