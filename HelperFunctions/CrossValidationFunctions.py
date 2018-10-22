@@ -23,7 +23,10 @@ def cross_validation_with_ridge(y, x, k_indices, lambda_):
     
     folds = k_indices.shape[0]
 
-    w_avg = np.zeros(x.shape[1])
+    if len( x.shape ) == 1:
+        w_avg = 0
+    else:
+        w_avg = np.zeros(x.shape[1])
     loss_tr_avg = 0
     loss_te_avg = 0
     
@@ -51,4 +54,4 @@ def cross_validation_with_ridge(y, x, k_indices, lambda_):
         loss_tr_avg = loss_tr_avg + loss_tr/folds
         loss_te_avg = loss_te_avg + loss_te/folds
     
-    return w_avg, loss_tr_avg, loss_tr_avg
+    return w_avg, loss_tr_avg, loss_te_avg
