@@ -48,7 +48,7 @@ def split_data(x, y, ratio, seed=1):
     yrand = np.random.permutation(y)
     
     limit = int(y.shape[0]*ratio)
-    
+
     return xrand[:limit], xrand[limit:], yrand[:limit], yrand[limit:]
 
 

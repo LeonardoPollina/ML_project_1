@@ -1,6 +1,7 @@
 from compute_losses import *
 from compute_gradients import *
 from regressors import *
+from proj1_helpers import *
 
 def build_k_indices(y, k_fold, seed):
     """build k indices for k-fold."""
@@ -14,7 +15,7 @@ def build_k_indices(y, k_fold, seed):
 
 #cross validation with ridge regression (We can add other types of CV when we choose other
 #working regressors)
-def cross_validation_with_ridge(y, x, k_indices, lambda_):
+def cross_validation_with_ridge(y, x, k_indices, lambda_, printSTD = False):
     """CV regression according to the splitting in train/test given by k_indices.
     
     The returned quantities are the average of the quantities computed in the single folds
@@ -22,13 +23,14 @@ def cross_validation_with_ridge(y, x, k_indices, lambda_):
     return w, loss_tr, loss_te"""
     
     folds = k_indices.shape[0]
+    loss_tr = np.zeros(folds)
+    loss_te = np.zeros(folds)
+    accuracy = np.zeros(folds)
 
     if len( x.shape ) == 1:
         w_avg = 0
     else:
         w_avg = np.zeros(x.shape[1])
-    loss_tr_avg = 0
-    loss_te_avg = 0
     
     for k in range(folds):
         
@@ -46,12 +48,15 @@ def cross_validation_with_ridge(y, x, k_indices, lambda_):
         w = ridge_regression(ytr,xtr,lambda_)
 
         #compute losses
-        loss_tr = compute_loss_RMSE(ytr,xtr,w)
-        loss_te = compute_loss_RMSE(yte,xte,w)
-        
-        #update the quantities
-        w_avg = w_avg + w/folds
-        loss_tr_avg = loss_tr_avg + loss_tr/folds
-        loss_te_avg = loss_te_avg + loss_te/folds
+        loss_tr[k] = compute_loss_RMSE(ytr,xtr,w)
+        loss_te[k] = compute_loss_RMSE(yte,xte,w)
+
+        #accuracy
+        y_pred = predict_labels(w, xte)
+        accuracy[k] = np.sum(y_pred == yte) / len(yte)  
+
+    if printSTD:
+        print(f'STD of test error: {np.std(loss_te)}')
+
     
-    return w_avg, loss_tr_avg, loss_te_avg
+    return np.mean(accuracy), np.mean(loss_tr), np.mean(loss_te)
