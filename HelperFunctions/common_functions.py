@@ -1,6 +1,6 @@
 import numpy as np
 
-def standardize(xOriginal, mean=-1, std=-1):
+def standardize(xOriginal, mean=np.array([]), std=np.array([])):
     """
     Standardize the original data set.
     Standardization of the test set is done with the mean and std of the training set:
@@ -8,7 +8,8 @@ def standardize(xOriginal, mean=-1, std=-1):
     If the mean and std are not defined: we compute and applied them for the standardization
     If it is already given, we directly applied the standardization
     """
-    if mean < 0 and std < 0:
+    
+    if mean.size == 0 and std.size == 0:
         mean_x = np.mean(xOriginal,axis=0)
         x = xOriginal - mean_x
         std_x = np.std(x,axis=0)
