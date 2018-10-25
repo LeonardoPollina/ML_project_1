@@ -22,13 +22,22 @@ def load_csv_data(data_path, sub_sample=False):
         ids = ids[::50]
 
     return yb, input_data, ids
+#####
+def sigmoid(t):
+    """apply sigmoid function on t."""
+    return 1.0 / (1 + np.exp(-t))
 
+sig=np.vectorize(sigmoid)
+######
 
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
     y_pred = np.dot(data, weights)
-    y_pred[np.where(y_pred <= 0)] = -1
-    y_pred[np.where(y_pred > 0)] = 1
+    y_pred=sigmoid(y_pred)
+    #y_pred[np.where(y_pred <= 0)] = -1
+    y_pred[np.where(y_pred <= 0.5)] = 0
+    #y_pred[np.where(y_pred > 0)] = 1
+     y_pred[np.where(y_pred > 0.5)] = 1
     
     return y_pred
 

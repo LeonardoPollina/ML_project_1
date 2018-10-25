@@ -39,8 +39,29 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         end_index = min((batch_num + 1) * batch_size, data_size)
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
+            
+def convert_0_to_minus1(data):
+    data[data == 0]= -1
+    return data
 
+def convert_minus1_to_0(data):
+    data[data == -1]= 0
+    return data
 
+def predict_logistic_labels(weights, data):
+    """Generates class predictions given weights, and a test data matrix"""
+    y_pred = np.dot(data, weights)
+    y_pred=sigmoid(y_pred)
+    y_pred[np.where(y_pred <= 0.5)] = 0
+    y_pred[np.where(y_pred > 0.5)] = 1
+    
+    return y_pred
+
+def sigmoid(t):
+    """apply sigmoid function on t."""
+    return 1.0 / (1 + np.exp(-t))
+
+sig=np.vectorize(sigmoid)
 
 ################################################################################
 #                        The requested methods:                                #
