@@ -1,16 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import csv
 from proj1_helpers import *
-
 
 ################################################################################
 #                        The requested methods:                                #
 ################################################################################
-
-"""
-Linear regression using gradient descent
-Note that MSE is used as loss function
-"""
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     """Gradient descent algorithm."""
@@ -48,11 +43,6 @@ def gradient_descent(y, tx, initial_w, max_iters, gamma, threshold = 1e-6, compu
         
     return loss,w
 
-"""
-Linear regression using stochastic gradient descent with batch size = 1
-Note that MSE is used as loss function
-"""
-
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     """Stochastic gradient descent algorithm."""
 
@@ -75,6 +65,7 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
               bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]))
 
     return w, loss
+
 ## we should merge these 2 functions above and below
 def stochastic_gradient_descent( y, tx, initial_w, batch_size, max_iters, gamma,
          compute_loss=compute_loss_MSE, compute_gradient=compute_gradient_MSE):
@@ -100,10 +91,9 @@ def stochastic_gradient_descent( y, tx, initial_w, batch_size, max_iters, gamma,
     return loss, w
 
 
-
-"""
-Least squares regression using normal equations
-"""
+def sigmoid(t):
+    """apply sigmoid function on t."""
+    return 1.0 / (1 + np.exp(-t))
 
 def least_squares(y, tx):
     """Compute the least squares solution."""
@@ -115,9 +105,6 @@ def least_squares(y, tx):
     loss = np.mean(e**2)/2
     return w, loss
 
-"""
-Ridge regression using normal equations
-"""
 
 def ridge_regression(y, tx, lambda_):
     """Compute ridge regression."""
@@ -127,19 +114,7 @@ def ridge_regression(y, tx, lambda_):
     return w, loss   
 
 
-"""
-Logistic regression using gradient descent
-"""
-
-
-"""
-Regularized logistic regression using gradient descent
-"""
-
 #                                     Logit                                    #
-def sigmoid(t):
-    """apply sigmoid function on t."""
-    return 1.0 / (1 + np.exp(-t))
 
 def calculate_logistic_loss(y, tx, w):
     """compute the cost by negative log likelihood."""
@@ -378,7 +353,7 @@ def cross_validation_with_ridge(y, x, k_indices, lambda_, printSTD = False):
     
     return np.mean(accuracy), np.mean(loss_tr), np.mean(loss_te)
 
-def cross_validation_with_logistic(y, x, k_indices, lambda_):
+def cross_validation_with_logistic(y, x, k_indices, gamma, lambda_):
     """CV regression according to the splitting in train/test given by k_indices.
     
     The returned quantities are the average of the quantities computed in the single folds
@@ -407,7 +382,7 @@ def cross_validation_with_logistic(y, x, k_indices, lambda_):
         xtr = np.delete(x,idx,0)
 
         #learning by gradient descent (with logistic)
-        loss, w = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
+        loss, w = learning_by_penalized_gradient(ytr, xtr, w, gamma, lambda_)
         #accuracy
         y_pred = predict_logistic_labels(w, xte)
         accuracy[k] = np.sum(y_pred == yte) / len(yte)  
@@ -539,6 +514,47 @@ def print_invalid(data,invalidValue):
     return
 
 ### Remove
+
+def removeConstantColumns(data):
+    '''Remove columns which are constants from the data.
+       
+       Return data, idx_removed
+    '''
+    std = np.std(data, axis = 0)
+    idx_removed = np.where(std==0)[0]
+    if len(idx_removed >0 ):
+        data = np.delete(data,idx_removed,axis=1)
+    
+    return data, idx_removed
+
+def removeHighCorrelatedColumns(data, threshold = 0.8):
+    '''Remove columns which are highly correlated.
+       
+       WARNING: the returned list idx_removed MUST be used in a for loop on the test data, removing features one by one
+       
+       Return data, idx_removed
+    '''
+    #initialize idx_removed
+    idx_removed = []
+        
+    #Get first elements of the highly correlated couples
+    R = np.ma.corrcoef(data.T)
+    idx_HC = np.where( (R > threshold) & (R < 0.98))[0] 
+
+    while(idx_HC.shape[0] > 0):
+        
+        idx_to_remove = idx_HC.max()
+        
+        data = np.delete(data, idx_to_remove, axis=1)
+        idx_removed.append(idx_to_remove)
+        
+        #compute the correlation coefficients of the reduced dataset
+        R = np.ma.corrcoef(data.T)
+        idx_HC = np.where( (R > threshold) & (R < 0.98))[0] 
+        
+    
+    return data, idx_removed
+    
 
 def removeLines(data, y, idxCol, invalidValue):
     '''Remove the lines in data that contains invalidValue in position idxCol.
