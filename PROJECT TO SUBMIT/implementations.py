@@ -530,4 +530,96 @@ def showCumulativeVariance(percVariance1, percVariance2):
 #                               Jet division                                   #
 ################################################################################
 
-###divide the ipnyb file in functions
+
+def indices_jet_division(input_data)
+    feature_number_of_jet = 22;
+    idx0 = np.where(input_data[:,feature_number_of_jet]==0)
+    idx1 = np.where(input_data[:,feature_number_of_jet]==1)
+    idx2 = np.where(input_data[:,feature_number_of_jet]>=2)
+    return idx0, idx1, idx2
+
+def data_split_with_jet_division (data)
+    idx0, idx1, idx2 = indices_jet_division(data)
+    data_jet0 = data[idx0]
+    data_jet1 = data[idx1]
+    data_jet2 = data[idx2]
+    return data_jet0, data_jet1, data_jet2
+
+################################################################################
+#                        Hyperparameters selection                             #
+################################################################################
+
+
+def grid_search_hyperparam_with_CV(y, tx, lambdas, degrees):
+    loss_tr = np.zeros((len(lambdas), len(degrees)))
+    loss_te = np.zeros((len(lambdas), len(degrees)))
+    accuracy = np.zeros((len(lambdas), len(degrees)))
+    
+    for idx_lambda, lambda_ in enumerate(lambdas):
+        for idx_degree, degree in enumerate(degrees):
+                        
+            x_augmented = build_poly(tx, degree)
+            
+            #regression with your favourite method
+            k_indices = build_k_indices(y, 4, 1)
+            acc, loss1, loss2 = cross_validation_with_ridge(y, x_augmented, k_indices, lambda_)
+            
+            loss_tr[idx_lambda, idx_degree] = loss1
+            loss_te[idx_lambda, idx_degree] = loss2
+            accuracy[idx_lambda, idx_degree] = acc
+    
+    #find the best using the loss
+    min_loss_te = np.min(loss_te)
+    best_lambda_loss = lambdas[ np.where( loss_te == min_loss_te )[0] ]
+    best_degree_loss = degrees[ np.where( loss_te == min_loss_te )[1] ]
+
+    #recompute best w
+    x_augmented = build_poly(tx, int(best_degree_loss))
+    best_w_loss = ridge_regression(y,x_augmented,best_lambda_loss)
+    
+    #find the best using the accuracy
+    max_acc = np.max(accuracy)
+    best_lambda_acc = lambdas[ np.where( accuracy == max_acc )[0] ]
+    best_degree_acc = degrees[ np.where( accuracy == max_acc )[1] ]
+    
+    #recompute best w
+    x_augmented = build_poly(tx, int(best_degree_acc[0]))
+    best_w_acc = ridge_regression(y,x_augmented,best_lambda_acc[0])
+
+    return best_lambda_loss, best_degree_loss, best_w_loss, best_lambda_acc, best_degree_acc, best_w_acc, loss_tr, loss_te, accuracy
+
+
+def grid_search_hyperparam_RIDGE(y, tx, lambdas, degrees):
+    loss_tr = np.zeros((len(lambdas), len(degrees)))
+    loss_te = np.zeros((len(lambdas), len(degrees)))
+    
+    seed = 1
+    
+    for idx_lambda, lambda_ in enumerate(lambdas):
+        for idx_degree, degree in enumerate(degrees):
+            
+            x_augmented = build_poly(tx, degree)
+            
+            #regression with your favourite method
+            x_tr, x_te, y_tr, y_te = split_data(x_augmented, y, 0.7, seed = seed)
+
+            weights = ridge_regression(y_tr, x_tr, lambda_)
+
+            rmse_tr= np.sqrt(2 * compute_loss_MSE(y_tr, x_tr, weights))
+            rmse_vt= np.sqrt(2 * compute_loss_MSE(y_te, x_te, weights))
+            loss_tr[idx_lambda, idx_degree] = rmse_tr
+            loss_te[idx_lambda, idx_degree] = rmse_vt
+        
+    min_loss_te = np.min(loss_te)
+    best_lambda = lambdas[ np.where( loss_te == min_loss_te )[0] ]
+    best_degree = degrees[ np.where( loss_te == min_loss_te )[1] ]
+
+    #recompute best w
+    x_augmented = build_poly(tx, int(best_degree))
+    best_w = ridge_regression(y,x_augmented,best_lambda)
+    
+    #version 2.0 that is easier to understand/read
+    hyperparameters = [best_lambda, best_degree]
+    losses = [loss_tr, loss_te]
+    return hyperparameters, best_w, losses
+    
