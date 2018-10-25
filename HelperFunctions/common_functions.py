@@ -3,27 +3,9 @@ import numpy as np
 def standardize(xOriginal, mean=np.array([]), std=np.array([])):
     """
     Standardize the original data set.
-
-    We compute the mean and the std of xOriginal, then standardize.
-    """
-    mean_x = np.mean(xOriginal,axis=0)
-    x = xOriginal - mean_x
-    std_x = np.std(x,axis=0)
-    if (std_x==0).any():
-        print('Substitute 0 with 0.0001')
-        std_x[std_x == 0] = 1e-4
-    x = x / std_x
-
-    return x, mean_x, std_x
-
-def standardizeWithGivenParameters(xOriginal, mean, std):
-    """
-    Use this to standardize the test data set.
-    
     Mean and std are the parameters computed on the training set.
-    """
-<<<<<<< HEAD
-    
+    We compute the mean and the std of xOriginal, then standardize.
+    """   
     if mean.size == 0 and std.size == 0:
         mean_x = np.mean(xOriginal,axis=0)
         x = xOriginal - mean_x
@@ -36,11 +18,6 @@ def standardizeWithGivenParameters(xOriginal, mean, std):
         x = xOriginal - mean
         x = x / std
         mean_x,std_x = mean,std
-=======
-    x = xOriginal - mean
-    x = x / std
-    mean_x,std_x = mean,std
->>>>>>> 67487f1532964863e42eff3fd8bfe6e041a3ba6b
     return x, mean_x, std_x
 
 def sample_data(y, x, seed, size_samples):
