@@ -158,7 +158,6 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
     loss, gradient = penalized_logistic_regression(y, tx, w, lambda_)
     w -= gamma * gradient
     return loss, w
-
 #                                     Newton                                   #
 
 def newton(y, tx, w0, gamma, max_iter, tol=1e-6):
@@ -343,7 +342,7 @@ def cross_validation_with_ridge(y, x, k_indices, lambda_, printSTD = False):
     
     return np.mean(accuracy), np.mean(loss_tr), np.mean(loss_te)
 
-def cross_validation_with_logistic(y, x, k_indices, gamma, lambda_):
+def cross_validation_with_logistic(y, x, k_indices,initial_w, gamma, lambda_,max_iter):
     """CV regression according to the splitting in train/test given by k_indices.
     
     The returned quantities are the average of the quantities computed in the single folds
@@ -352,6 +351,7 @@ def cross_validation_with_logistic(y, x, k_indices, gamma, lambda_):
     
     folds = k_indices.shape[0]
     accuracy = np.zeros(folds)
+    w=initial_w
     
     for k in range(folds):
         
@@ -366,11 +366,16 @@ def cross_validation_with_logistic(y, x, k_indices, gamma, lambda_):
         ytr = np.delete(y,idx,0)
         xtr = np.delete(x,idx,0)
 
-        #learning by gradient descent (with logistic)
-        loss, w = learning_by_penalized_gradient(ytr, xtr, w, gamma, lambda_)
+        #learning by penalized graient descent (with regularized logistic)
+        for iter_ in range(max_iter):
+            _, w = learning_by_penalized_gradient(ytr, xtr, w, gamma, lambda_)
+            
         #accuracy
         y_pred = predict_logistic_labels(w, xte)
-        accuracy[k] = np.sum(y_pred == yte) / len(yte)  
+        accuracy[k] = np.sum(y_pred == yte) / len(yte) 
+        
+        if k == 2:
+            print('second K fold in CV')
    
     return np.mean(accuracy)
 
@@ -474,6 +479,46 @@ def grid_search(y, tx, w0, w1, compute_loss=compute_loss_MSE):
             losses[i,j] = compute_loss( y, tx, np.array([ w0[i],w1[j] ]) )        
     return losses
 
+def removeConstantColumns(data):
+    '''Remove columns which are constants from the data.
+       
+       Return data, idx_removed
+    '''
+    std = np.std(data, axis = 0)
+    idx_removed = np.where(std==0)[0]
+    if len(idx_removed >0 ):
+        data = np.delete(data,idx_removed,axis=1)
+    
+    return data, idx_removed
+
+def removeHighCorrelatedColumns(data, threshold = 0.8):
+    '''Remove columns which are highly correlated.
+       
+       WARNING: the returned list idx_removed MUST be used in a for loop on the test data, removing features one by one
+       
+       Return data, idx_removed
+    '''
+    #initialize idx_removed
+    idx_removed = []
+        
+    #Get first elements of the highly correlated couples
+    R = np.ma.corrcoef(data.T)
+    idx_HC = np.where( (R > threshold) & (R < 0.98))[0] 
+
+    while(idx_HC.shape[0] > 0):
+        
+        idx_to_remove = idx_HC.max()
+        
+        data = np.delete(data, idx_to_remove, axis=1)
+        idx_removed.append(idx_to_remove)
+        
+        #compute the correlation coefficients of the reduced dataset
+        R = np.ma.corrcoef(data.T)
+        idx_HC = np.where( (R > threshold) & (R < 0.98))[0] 
+        
+    
+    return data, idx_removed
+
 
 ################################################################################
 #                                Preprocessing                                 #
@@ -540,14 +585,6 @@ def removeHighCorrelatedColumns(data, threshold = 0.8):
     
     return data, idx_removed
     
-
-def removeLines(data, y, idxCol, invalidValue):
-    '''Remove the lines in data that contains invalidValue in position idxCol.
-    Note that we need to remove the elements also from the vector y, to be consistent.'''
-    idx = np.where(data[:,idxCol] == invalidValue)
-    data = np.delete(data,idx,axis=0)
-    yret = np.delete(y, idx, axis=0)
-    return data, yret
 
 def removeColumns(data,threshold):
     ''' Remove the columns containing more than threshold (in %) of invalid value.'''
@@ -707,60 +744,31 @@ def grid_search_hyperparam_with_CV(y, tx, lambdas, degrees):
 
     return best_lambda_loss, best_degree_loss, best_w_loss, best_lambda_acc, best_degree_acc, best_w_acc, loss_tr, loss_te, accuracy
 
-def logistic_hyperparam_with_CV(y, tx, lambdas, gamma, degrees):
-    
+def logistic_hyperparam_with_CV(y, tx, lambdas, gamma, degrees, max_iter):
+
     accuracy = np.zeros((len(lambdas), len(degrees)))
     
     for idx_lambda, lambda_ in enumerate(lambdas):
         for idx_degree, degree in enumerate(degrees):
                         
             x_augmented = build_poly(tx, degree)
+            initial_w = np.ones((x_augmented.shape[1]))
             
             #regression with logistic method
             k_indices = build_k_indices(y, 4, 1)
-            acc = cross_validation_with_logistic(y, x_augmented, k_indices, lambda_, gamma)        
+            acc = cross_validation_with_logistic(y, x_augmented, k_indices, initial_w, gamma, lambda_, max_iter)        
             accuracy[idx_lambda, idx_degree] = acc
     
     #find the best using the accuracy
     max_acc = np.max(accuracy)
-    best_lambda_acc = lambdas[ np.where( accuracy == max_acc )[0] ]
-    best_degree_acc = degrees[ np.where( accuracy == max_acc )[1] ]
+    print('max acc = ',max_acc)
+    coordinates_best_parameter = np.where( accuracy == max_acc )
+    print('coordinates_best_parameter: ', coordinates_best_parameter)
+    best_lambda_acc = lambdas[ coordinates_best_parameter[0][0] ]
+    best_degree_acc = degrees[ coordinates_best_parameter[1][0] ]
 
-    return best_lambda_acc, best_degree_acc,accuracy
+    return best_lambda_acc, best_degree_acc, max_acc
 
-def grid_search_hyperparam_RIDGE(y, tx, lambdas, degrees):
-    loss_tr = np.zeros((len(lambdas), len(degrees)))
-    loss_te = np.zeros((len(lambdas), len(degrees)))
-    
-    seed = 1
-    
-    for idx_lambda, lambda_ in enumerate(lambdas):
-        for idx_degree, degree in enumerate(degrees):
-            
-            x_augmented = build_poly(tx, degree)
-            
-            #regression with your favourite method
-            x_tr, x_te, y_tr, y_te = split_data(x_augmented, y, 0.7, seed = seed)
-
-            weights = ridge_regression(y_tr, x_tr, lambda_)
-
-            rmse_tr= np.sqrt(2 * compute_loss_MSE(y_tr, x_tr, weights))
-            rmse_vt= np.sqrt(2 * compute_loss_MSE(y_te, x_te, weights))
-            loss_tr[idx_lambda, idx_degree] = rmse_tr
-            loss_te[idx_lambda, idx_degree] = rmse_vt
-        
-    min_loss_te = np.min(loss_te)
-    best_lambda = lambdas[ np.where( loss_te == min_loss_te )[0] ]
-    best_degree = degrees[ np.where( loss_te == min_loss_te )[1] ]
-
-    #recompute best w
-    x_augmented = build_poly(tx, int(best_degree))
-    best_w = ridge_regression(y,x_augmented,best_lambda)
-    
-    #version 2.0 that is easier to understand/read
-    hyperparameters = [best_lambda, best_degree]
-    losses = [loss_tr, loss_te]
-    return hyperparameters, best_w, losses
 
 ################################################################################
 #                                Logistic                                      #
