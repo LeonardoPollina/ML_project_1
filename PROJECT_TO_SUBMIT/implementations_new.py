@@ -90,11 +90,6 @@ def stochastic_gradient_descent( y, tx, initial_w, batch_size, max_iters, gamma,
               bi=n_iter, ti=max_iters - 1, l=loss))
     return loss, w
 
-
-def sigmoid(t):
-    """apply sigmoid function on t."""
-    return 1.0 / (1 + np.exp(-t))
-
 def least_squares(y, tx):
     """Compute the least squares solution."""
 
@@ -661,7 +656,7 @@ def showCumulativeVariance(percVariance1, percVariance2):
 
 
 def indices_jet_division(input_data):
-    feature_number_of_jet = 22;
+    feature_number_of_jet = 22
     idx0 = np.where(input_data[:,feature_number_of_jet]==0)
     idx1 = np.where(input_data[:,feature_number_of_jet]==1)
     idx2 = np.where(input_data[:,feature_number_of_jet]>=2)
@@ -719,8 +714,6 @@ def grid_search_hyperparam_with_CV(y, tx, lambdas, degrees):
 
 def logistic_hyperparam_with_CV(y, tx, lambdas, gamma, degrees):
     
-    loss_tr = np.zeros((len(lambdas), len(degrees)))
-    loss_te = np.zeros((len(lambdas), len(degrees)))
     accuracy = np.zeros((len(lambdas), len(degrees)))
     
     for idx_lambda, lambda_ in enumerate(lambdas):
@@ -787,13 +780,6 @@ def predict_logistic_labels(weights, data):
     y_pred[np.where(y_pred > 0.5)] = 1
     
     return y_pred
-
-def sigmoid(t):
-    """apply sigmoid function on t."""
-    return 1.0 / (1 + np.exp(-t))
-
-sig=np.vectorize(sigmoid)
-
             
 def convert_0_to_minus1(data):
     data[data == 0]= -1
