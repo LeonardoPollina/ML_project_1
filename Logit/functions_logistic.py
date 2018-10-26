@@ -9,12 +9,12 @@ sig=np.vectorize(sigmoid)
 def calculate_logistic_loss(y, tx, w):
     """compute the cost by negative log likelihood."""
     pred = sigmoid(tx.dot(w))
-    print(pred)
+    #print(pred)
     #CorrectedZero = 1e-7
     CorrectedZero = 1e-15
     #loss = np.ones(tx.shape[0]).dot(np.log(1+np.exp(tx.dot(w))))-y.dot(tx.dot(w))
     loss = y.T.dot(np.log(pred+CorrectedZero)) + (1 - y).T.dot(np.log(1 - pred+CorrectedZero))
-    print('logistic loss: ',- loss)
+    #print('logistic loss: ',- loss)
     return np.squeeze(- loss)
 
 
