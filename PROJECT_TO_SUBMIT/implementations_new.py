@@ -313,11 +313,6 @@ def cross_validation_with_ridge(y, x, k_indices, lambda_, printSTD = False):
     loss_tr = np.zeros(folds)
     loss_te = np.zeros(folds)
     accuracy = np.zeros(folds)
-
-    if len( x.shape ) == 1:
-        w_avg = 0
-    else:
-        w_avg = np.zeros(x.shape[1])
     
     for k in range(folds):
         
