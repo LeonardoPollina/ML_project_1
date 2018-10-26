@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
-from proj1_helpers import *
+from proj1_helpers_new import *
 
 ################################################################################
 #                        The requested methods:                                #
@@ -168,7 +168,6 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
 
 def newton(y, tx, w0, gamma, max_iter, tol=1e-6):
     
-    losses = [0]
     
     for i in range(max_iter):
         
@@ -307,6 +306,7 @@ def build_k_indices(y, k_fold, seed):
 
 #cross validation with ridge regression (We can add other types of CV when we choose other
 #working regressors)
+
 def cross_validation_with_ridge(y, x, k_indices, lambda_, printSTD = False):
     """CV regression according to the splitting in train/test given by k_indices.
     
@@ -362,11 +362,6 @@ def cross_validation_with_logistic(y, x, k_indices, gamma, lambda_):
     
     folds = k_indices.shape[0]
     accuracy = np.zeros(folds)
-
-    if len( x.shape ) == 1:
-        w_avg = 0
-    else:
-        w_avg = np.zeros(x.shape[1])
     
     for k in range(folds):
         
