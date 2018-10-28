@@ -13,12 +13,13 @@ Here there are all the implemented functions used for the different steps of our
 Functions are divided in different groups, which are explained below.
   <ul>
   <li> <b> Requested methods </b> </li>
-The six functions asked in report guidelines (least_squares_GD, least_squares_SGD, least_squares, ridge_regression, logistic_regression, reg_logistic_regression).
-All these functions return (w, loss). 
-Notice that, in the case of iterative functions, we decided to not add a stopping criteria
+It contains the six functions asked in report guidelines (least_squares_GD, least_squares_SGD, least_squares, ridge_regression, logistic_regression, reg_logistic_regression).
+All these functions return (w, loss).
+  
+Notice that, in the case of iterative functions, we did not add a stopping criteria
 (e.g. small norm of the gradient), that is there is no threshold parameter asked in the functions. 
   <li> <b> Preprocessing </b> </li>
-All the functions needed for the preliminary data analisys and preprocessing of our final regression model. 
+All the functions needed for the preliminary data analysis and preprocessing of our final regression model. 
 Functions are in the same order as they are called in the run.py file.
   <li> <b> Loss functions </b> </li> 
 All the functions required to compute the loss of different models. In particular, MSE, MAE, RMSE, logistic and regularized logistic losses are implemented. 
@@ -33,5 +34,5 @@ All the functions needed to apply Netwon method for classification.
 All the additional functions which can be used to manipulate data, such as subsampling of data, polynomial expansion, counting and replacing of a chosen invalid value, applying the sigmoid function etc.
   <li> <b> PCA </b> </li>
 Functions needed to compute PCA. 
-Notice that this preprocessing step for feature selection was not used as final results were not satisfactory. 
+Notice that this preprocessing step for feature selection was not used because final results were not satisfactory. 
 </ul>
