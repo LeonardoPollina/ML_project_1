@@ -21,17 +21,18 @@ Notice that, in the case of iterative functions, we did not add a stopping crite
 All the functions needed for the preliminary data analysis and preprocessing of our final regression model. 
 Functions are in the same order as they are called in the run.py file.
   <li> <b> Loss functions </b> </li> 
-All the functions required to compute the loss of different models. In particular, MSE, MAE, RMSE, logistic and regularized logistic losses are implemented. 
+All the functions required to compute the loss of different models. <br>
+  In particular, MSE, MAE, RMSE, logistic and regularized logistic losses are implemented. 
   <li> <b> Gradient functions </b> </li> 
 All the functions required to compute the gradient of different loss functions. In particular, MSE, MAE, logistic and regularized logistic gradients are implemented.  
   <li> <b> Predictions </b> </li> 
-Functions for labels prediciton for logistic regression (classification model). In this case the labels are {0,1} and thus, the threshold to perform classification is set to 0.5 . 
+Functions for labels prediciton for logistic regression (classification model). In this case the labels are {0,1} and thus, the threshold to perform classification is set to 0.5 . <br>
 Notice that functions for labels prediction for regression models are contained in 'proj1_helpers.py'.
   <li> <b> Newton functions </b> </li> 
 All the functions needed to apply Netwon method for classification. 
   <li> <b> Useful functions </b> </li> 
 All the additional functions which can be used to manipulate data, such as subsampling of data, polynomial expansion, counting and replacing of a chosen invalid value, applying the sigmoid function etc.
   <li> <b> PCA </b> </li>
-Functions needed to compute PCA. 
+Functions needed to compute PCA. <br>
 Notice that this preprocessing step for feature selection was not used because final results were not satisfactory. 
 </ul>
