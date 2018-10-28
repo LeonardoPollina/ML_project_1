@@ -40,11 +40,11 @@ Notice that this preprocessing step for feature selection was not used because f
 ## proj1_helpers.py
 Here there are the three functions provided by the professors. 
   <ol>
-  <li> load_csv_data() </li>
+  <li> <b> load_csv_data() </b> </li>
 To load the train and test data with the corresponding labels (when provided) from a .csv file.
-  <li> predict_labels() </li>
+  <li> <b> predict_labels() </b> </li>
 Function to predict labels in the case of normal regression methods (not logistic). <br>
 It uses labels {-1,1}.
-  <li> create_csv_submission() </li>
+  <li> <b> create_csv_submission() </b> </li>
 Function to create the .csv file containing the final labels to submit. 
 </ol>
