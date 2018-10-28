@@ -38,7 +38,7 @@ Notice that this preprocessing step for feature selection was not used because f
 </ul>
 
 ## proj1_helpers.py
-Here there are the three functions provided by the professors. 
+Here there are the three functions provided by the professors:
   <ol>
   <li> <b> load_csv_data() </b> </li>
 To load the train and test data with the corresponding labels (when provided) from a .csv file.
@@ -48,3 +48,9 @@ It uses labels {-1,1}.
   <li> <b> create_csv_submission() </b> </li>
 Function to create the .csv file containing the final labels to submit. 
 </ol>
+
+## run.py
+
+
+<p align="right"/>
+Group members: Nicola Ischia, Marion Perier, Leonardo Pollina
