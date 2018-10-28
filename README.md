@@ -50,6 +50,7 @@ Function to create the .csv file containing the final labels to submit.
 </ol>
 
 ## run.py
+This Python file contains the code necessary to 
 
 
 <p align="right"/>
