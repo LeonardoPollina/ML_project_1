@@ -36,3 +36,15 @@ All the additional functions which can be used to manipulate data, such as subsa
 Functions needed to compute PCA. <br>
 Notice that this preprocessing step for feature selection was not used because final results were not satisfactory. 
 </ul>
+
+## proj1_helpers.py
+Here there are the three functions provided by the professors. 
+  <ol>
+  <li> load_csv_data() </li>
+To load the train and test data with the corresponding labels (when provided) from a .csv file.
+  <li> predict_labels() </li>
+Function to predict labels in the case of normal regression methods (not logistic). <br>
+It uses labels {-1,1}.
+  <li> create_csv_submission() </li>
+Function to create the .csv file containing the final labels to submit. 
+</ol>
