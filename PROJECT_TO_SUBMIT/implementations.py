@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
-from proj1_helpers_new import *
+from proj1_helpers import *
 
 """
 Implementations of all the methods to run the project, including the requested methods.
@@ -55,7 +55,7 @@ def ridge_regression(y, tx, lambda_):
     Ridge regression using normal equations
     """
     w = np.linalg.solve(tx.T@tx + lambda_*2*y.shape[0]*np.eye(tx.shape[1]), tx.T@y.T)
-    loss = compute_loss_MSE(y, tx, w)
+    loss = compute_loss_rmse(y, tx, w)
     return w, loss  
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
@@ -120,24 +120,26 @@ def standardize(data, mean = np.array([]), std = np.array([])):
 def indices_jet_division(data):
     """
     The 22nd feature "PRI_jet_num" represents the number of jets. 
-    It is an integer with value of 0, 1, 2 or 3 with possible larger values that have been capped at 3.
+    It is an integer with value of 0, 1, 2 or 3 with possible larger values that 
+    have been capped at 3.
     Indices of samples with the same PRI_jet_num value are returned.
     """
     feature_PRI_jet_num = 22
     idx0 = np.where(data[:,feature_PRI_jet_num]==0)
     idx1 = np.where(data[:,feature_PRI_jet_num]==1)
     idx2 = np.where(data[:,feature_PRI_jet_num]>=2)
-    return idx0, idx1, idx2
+    idxs = [idx0, idx1, idx2]
+    return idxs
 
-def data_split_with_jet_division (data):
+def data_split_with_jet_division (data, idxs):
     """
     The 22nd feature "PRI_jet_num" represents the number of jets. 
-    The data is divided in three sets, based on this value. 
+    The data is divided in subsets according to the 3 array of indices contained
+    the list called idxs, each one corresponding to a different jet number.
     """
-    idx0, idx1, idx2 = indices_jet_division(data)
-    data_jet0 = data[idx0]
-    data_jet1 = data[idx1]
-    data_jet2 = data[idx2]
+    data_jet0 = data[idxs[0]]
+    data_jet1 = data[idxs[1]]
+    data_jet2 = data[idxs[2]]
     return data_jet0, data_jet1, data_jet2
 
 def removeConstantColumns(data):
@@ -248,7 +250,7 @@ def cross_validation_with_logistic(y, x, k_indices,initial_w, gamma, lambda_,max
         accuracy[k] = np.sum(y_pred == yte) / len(yte)            
     return np.mean(accuracy)
 
-def grid_search_hyperparam_with_CV(y, tx, lambdas, degrees):
+def grid_search_hyperparam_with_RidgeCV(y, tx, lambdas, degrees):
     """
     Cross validation with grid search used to estimate th best hyperparameters for 
     ridge regression, that is lambda and the degree for polynomial expansion. 
@@ -546,7 +548,7 @@ def grid_search_hyperparam_newton_regularized(y, tx, lambdas, degrees, gamma):
     max_acc = np.max(accuracy)
     best_lambda_acc = lambdas[ np.where(accuracy == max_acc)[0][0] ]
     best_degree_acc = degrees[ np.where(accuracy == max_acc)[1][0] ]
-    return best_lambda_acc[0], best_degree_acc[0], accuracy
+    return best_lambda_acc, best_degree_acc, accuracy
 
 ################################################################################
 #                               Useful functions                               #
@@ -664,7 +666,7 @@ sigmoid=np.vectorize(sig)
 
 def plot_grid_search(lambdas, degrees, accuracy, plot_name = 'dummyPlotName'):
     """
-    Create a plot showing the best hyperparameters selected with the best accuracy
+    Create a plot showing hyperparameters given the best accuracy thus selected
     among all the possibles combinations of degrees and lambdas.
     """
     #Selection of the best hyperparameters
