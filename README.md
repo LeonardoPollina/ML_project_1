@@ -14,7 +14,7 @@ Functions are divided in different groups, which are explained below.
   <ul>
   <li> <b> Requested methods </b> </li>
 It contains the six functions asked in report guidelines (least_squares_GD, least_squares_SGD, least_squares, ridge_regression, logistic_regression, reg_logistic_regression).
-All these functions return (w, loss).
+All these functions return (w, loss). <br>
 Notice that, in the case of iterative functions, we did not add a stopping criteria
 (e.g. small norm of the gradient), that is there is no threshold parameter asked in the functions. 
   <li> <b> Preprocessing </b> </li>
