@@ -53,4 +53,4 @@ Function to create the .csv file containing the final labels to submit.
 
 
 <p align="right"/>
-Group members: Nicola Ischia, Marion Perier, Leonardo Pollina
+Group members: <i> Nicola Ischia, Marion Perier, Leonardo Pollina. <i>
