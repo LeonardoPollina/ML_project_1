@@ -54,6 +54,14 @@ This Python file contains the code used to implement all the different steps of 
 The code is divided in subsections: 
   <ol>
   <li> Importation of important libraries and other .py files. This includes the numpy and matplotlib.pyplot libraries and the file implementations.py. This gives access to all the necessary functions. </li>
+  <li> Loading of the training data using the provided function load_csv_data(). We obtain the train data and the corresponding labels. </li>
+  <li> Division of the data set in the three subsets depending on the number of jets.</li>
+  <li> Preprocessing parameters are set. Please note that if ReplaceToZero_FLAG is set to false, the convertion of invalid values to zero will not be performed. <br>
+With the same logic, if RemoveHCColumns_FLAG is set to false, highly correlated (HC) columns will be kept in the datasets.<br> CorrelationThreshold indicates the threshold used to decide whether two features are HC or not. <br>
+For our best model, both the flag parameters are set to <mark> True </mark>, and the threshold is <mark> 0.8 </mark>.
+</li>
+  <li> </li>
+  <li> </li>
   <li> </li>
   <li> </li>
 </ol>
