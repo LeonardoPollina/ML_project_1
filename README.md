@@ -52,18 +52,21 @@ Function to create the .csv file containing the final labels to submit.
 ## run.py
 This Python file contains the code used to implement all the different steps of our best (final) model, that is Ridge Regression. <br>
 The code is divided in subsections: 
-  <ol>
-  <li> Importation of important libraries and other .py files. This includes the numpy and matplotlib.pyplot libraries and the file implementations.py. This gives access to all the necessary functions. </li>
-  <li> Preprocessing parameters are set. Please note that if ReplaceToZero_FLAG is set to false, the convertion of invalid values to zero will not be performed. <br>
+  <ul>
+  <li> Importation of important libraries and other .py files. This includes the numpy and matplotlib.pyplot libraries and      the file implementations.py. This gives access to all the necessary functions. </li>
+  <li> <b> Preprocessing </b> </li>
+      <ol>   
+      <li> Preprocessing parameters are set. Please note that if ReplaceToZero_FLAG is set to false, the convertion of invalid values to zero will not be performed. <br>
 With the same logic, if RemoveHCColumns_FLAG is set to false, highly correlated (HC) columns will be kept in the datasets.<br> CorrelationThreshold indicates the threshold used to decide whether two features are HC or not. <br>
-    For our best model, both the flag parameters are set to <span style="background-color: #C0C0C0">True</span> , and the threshold is <b> 0.8 </b>. </li>
-  <li> Loading of the training data using the provided function load_csv_data(). We obtain the train data and the corresponding labels. </li>
-  <li> Invalid values (<b> -999 </b>) are replaced by 0.</li>
-  <li> Division of the data set in the three subsets depending on the number of jets.</li>
-  <li> Constant columns are removed from the three datasets. These columns are not supposed to give any useful information.</li>
-  <li> </li>
-  <li> </li>
-</ol>
+    For our best model, both the flag parameters are set to <b> True </b> , and the threshold is <b> 0.8 </b>. </li>
+      <li> Loading of the training data using the provided function load_csv_data(). We obtain the train data and the corresponding labels. </li>
+      <li> Invalid values (<b> -999 </b>) are replaced by 0.</li>
+      <li> Division of the data set in the three subsets depending on the number of jets.</li>
+      <li> Constant columns are removed from the three datasets. These columns are not supposed to give any useful information.</li>
+      <li> The three sets are standardized. Notice that mean and std of each set are stocked in order to use these parameters for the preprocessing of the test set. </li>
+      <li> Highly correlated columns are removed from each subset. Notice that indices of such columns are stocked in order to use these parameters for the preprocessing of the test set. </li>
+  </ol>
+  <li> <b> Preprocessing </b> </li>
 
 
 
