@@ -68,7 +68,7 @@ With the same logic, if RemoveHCColumns_FLAG is set to false, highly correlated 
   </ol>
   <li> <b> Training </b> </li>
       <ol>
-        <li> Estimation of best hyperparameters (<b>degree</b> for feature expansion, and <b>lambda</b> for the regularization term)for Ridge Regression. The optimization is performed using cross-validation. <br>
+        <li> Estimation of best hyperparameters (<b>degree</b> for feature expansion, and <b>lambda</b> for the regularization term) for Ridge Regression. The optimization is performed using cross-validation. <br>
         The best combination of hyperparameters was chosen depending of the maximum accuracy obtained.</li>
         <li> Training of the model on the whole data set (still divided in three subsets) using the hyperparameters previously found. <br> In this way, the weights are obtained. </li>
   </ol>
