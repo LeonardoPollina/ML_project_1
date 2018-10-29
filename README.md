@@ -62,7 +62,7 @@ With the same logic, if RemoveHCColumns_FLAG is set to false, highly correlated 
       <li> Loading of the training data using the provided function load_csv_data(). We obtain the train data and the corresponding labels. </li>
       <li> Invalid values (<b> -999 </b>) are replaced by 0.</li>
       <li> Division of the data set in the three subsets depending on the number of jets.</li>
-      <li> Constant columns are removed from the three datasets. These columns are not supposed to give any useful information. The indeces of such columns are stocked in order to remove the same colums in the test set. </li>
+      <li> Constant columns are removed from the three datasets. These columns are not supposed to give any useful information. The indices of such columns are stocked in order to remove the same colums in the test set. </li>
       <li> The three sets are standardized. Notice that mean and std of each set are stocked in order to use these parameters for the preprocessing of the test set. </li>
       <li> Highly correlated columns are removed from each subset. Notice that indices of such columns are stocked in order to use these parameters for the preprocessing of the test set.</li>
   </ol>
