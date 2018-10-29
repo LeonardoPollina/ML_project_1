@@ -310,7 +310,6 @@ def calculate_mse(e):
     """
     return 1/2*np.mean(e**2)
 
-#doit en garder qu'une seule des 3 !!!
 def compute_loss_mse(y, tx, w):
     """
     Calculate the loss using the mean square error (mse)
@@ -318,7 +317,6 @@ def compute_loss_mse(y, tx, w):
     e = y - tx.dot(w)
     return calculate_mse(e)
 
-#est-ce qu'on devrait l'utiliser ou la supprimer ?
 def calculate_mae(e):
     """
     Calculate the loss using the mean absolute error (mae)given the error vector e
@@ -594,12 +592,12 @@ def split_data(x, y, ratio, seed=1):
     set dedicated to training and the rest dedicated to testing. 
     Return the training then testing sets (x_tr, x_te) and training then testing labels (y_tr, y_te).
     """
-    #set seed
+    #Set seed
     np.random.seed(seed)
     xrand = np.random.permutation(x)
     np.random.seed(seed)
     yrand = np.random.permutation(y)
-    #to compute how many samples correspond to the desired ration
+    #Used to compute how many samples correspond to the desired ratio.
     limit = int(y.shape[0]*ratio)
     x_tr = xrand[:limit]
     x_te = xrand[(limit+1):]

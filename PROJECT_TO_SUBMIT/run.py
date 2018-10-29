@@ -89,12 +89,10 @@ best_lambda_acc1, best_degree_acc1, accuracy1 = grid_search_hyperparam_with_Ridg
 
 best_lambda_acc2, best_degree_acc2, accuracy2 = grid_search_hyperparam_with_RidgeCV(y2, x2, lambdas2, degrees2)
 
-
 print('Best hyperparameters:')
 print(f'Model with 0 jets:  lambda = {best_lambda_acc0}, degree = {best_degree_acc0}, accuracy = {np.max(accuracy0)}')
 print(f'Model with 1 jets:  lambda = {best_lambda_acc1}, degree = {best_degree_acc1}, accuracy = {np.max(accuracy1)}')
 print(f'Model with >1 jets: lambda = {best_lambda_acc2}, degree = {best_degree_acc2}, accuracy = {np.max(accuracy2)}')
-
 
 N0 = x0.shape[0]
 N1 = x1.shape[0]
@@ -102,7 +100,7 @@ N2 = x2.shape[0]
 
 # This is a good estimate of the total performance of our model
 TOTAccuracy = ( N0*np.max(accuracy0) + N1*np.max(accuracy1) + N2*np.max(accuracy2) ) / ( N0 + N1 + N2 )
-print(f'\n\n Our validation set reached a global accuracy of {TOTAccuracy}')
+print(f'\nOur validation set reached a global accuracy of {TOTAccuracy}\n')
 
 print('Retraining our model on the whole train (sub)sets using the obtained hyperparameters.')
 # Now we retrain our model using the obtained hyperparameters and the full train (sub)sets.

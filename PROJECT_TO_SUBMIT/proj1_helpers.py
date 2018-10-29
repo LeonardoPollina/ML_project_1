@@ -5,7 +5,9 @@ import numpy as np
 
 
 def load_csv_data(data_path, sub_sample=False):
-    """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
+    """
+    Loads data and returns y (class labels), tX (features) and ids (event ids)
+    """
     y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=1)
     x = np.genfromtxt(data_path, delimiter=",", skip_header=1)
     ids = x[:, 0].astype(np.int)
@@ -24,7 +26,9 @@ def load_csv_data(data_path, sub_sample=False):
     return yb, input_data, ids
 
 def predict_labels(weights, data):
-    """Generates class predictions given weights, and a test data matrix"""
+    """
+    Generates class predictions given weights, and a test data matrix
+    """
     y_pred = np.dot(data, weights)
     y_pred[np.where(y_pred <= 0)] = -1
     y_pred[np.where(y_pred > 0)] = 1
