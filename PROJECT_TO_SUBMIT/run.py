@@ -68,7 +68,7 @@ else:
 ##############################################################################
 ################################# Training  ##################################
 ##############################################################################
-print('----------TRAINING----------')
+print('-------------TRAINING------------')
 
 # Grid search to find the best degree and the best lambda.
 # For each couple (lambda, degree) we trained the model using ridge regression with 4-fold cross validation. Since this is not a  # classifier, the performance of the model is evaluated using the mean of the 4 accuracies (i.e. the percentage of correct        # predictions) on the validations set of the cross validation.
@@ -121,7 +121,7 @@ plot_grid_search(lambdas1, degrees1, accuracy1, 'grid_search.eps')
 ##############################################################################
 ################################ Prediction  #################################
 ##############################################################################
-print('----------PREDICTION----------')
+print('------------PREDICTION-----------')
 
 print('Loading test data...')
 _, test_data, ids_test = load_csv_data("../data/test.csv", sub_sample=False)
