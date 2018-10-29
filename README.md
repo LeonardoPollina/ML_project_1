@@ -86,10 +86,16 @@ With the same logic, if RemoveHCColumns_FLAG is set to false, highly correlated 
   </ol>
 </ul>
 
+## General information
+<ul>
+  <li> Notice that the submission file will be saved in your current folder (the folder containing the run.py file). </li>
+  <li> In order to run the file run.py, please use the terminal and type the command "python run.py" </li>
+</ul>
 
 
-## General Information
-Please, notice that all the code included in this project was written using Python Version 3.7 and only NumPy (version ????) and Matplolib (for visualization tasks) libraries were employed.
+## Software versions
+Please, notice that all the code included in this project was written using Python Version 3.6 and only NumPy (version 1.14.3) and Matplolib (for visualization tasks) libraries were employed.
 
+<br>
 <p align="right"/>
 Group members: <i> Nicola Ischia, Marion Perier, Leonardo Pollina. <i>
