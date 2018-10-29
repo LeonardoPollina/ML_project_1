@@ -77,7 +77,7 @@ With the same logic, if RemoveHCColumns_FLAG is set to false, highly correlated 
        <li> Loading of the test data.</li>
        <li> Division in three subsets depending on the number of jets.</li>
        <li> Deletion of constant columns using the indices stocked from the train set. </li>
-       <li> Standardization using for each subset the mean and std of the corresponding train set. </li>
+       <li> Standardization for each subset using the mean and std of the corresponding train set. </li>
        <li> Deletion of HC columns using the indices stocked from the train set. </li>
        <li> Features expansion using the optimal degree previously found.</li>
        <li> Prediction of final labels using the provided function predict_labels() </li>
