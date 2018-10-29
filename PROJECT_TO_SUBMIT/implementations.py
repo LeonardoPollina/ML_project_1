@@ -684,7 +684,7 @@ def plot_grid_search(lambdas, degrees, accuracy, plot_name = 'dummyPlotName'):
     X, Y = np.meshgrid(X, Y)
     Z = 1 - accuracy
     loss = ax1.contourf(X, Y, Z, 100)
-    ax1.plot(best_degree_acc, best_lambda_acc*1e3, '*', color='r', markersize=20)
+    ax1.plot(best_degree_acc, best_lambda_acc*1e3, '8', color='r', markersize=13)
     fig.colorbar(loss, ax=ax1)
     #Labels and title of the plot
     ax1.set_ylabel('Lambdas (1e-3)')
@@ -697,7 +697,7 @@ def plot_grid_search(lambdas, degrees, accuracy, plot_name = 'dummyPlotName'):
     ax2.set_title(f'Degree = {best_degree_acc}')
     starx = best_lambda_acc*1e3
     stary = np.min(1-accuracy[:,idx_deg])
-    ax2.plot(starx, stary, '*', color='r', markersize=10)
+    ax2.plot(starx, stary, '8', color='r', markersize=7)
     ax2 = fig.add_subplot(gs[1,0])
     ax2.plot(degrees, 1-accuracy[idx_lam,:])
     ax2.set_ylabel('1 - accuracy')
@@ -705,9 +705,9 @@ def plot_grid_search(lambdas, degrees, accuracy, plot_name = 'dummyPlotName'):
     ax2.set_title(f'Lambda = {best_lambda_acc*1e3}*1e-3')
     starx = best_degree_acc
     stary = np.min(1-accuracy[idx_lam,:])
-    ax2.plot(starx, stary, '*', color='r', markersize=10)
+    ax2.plot(starx, stary, '8', color='r', markersize=7)
     fig.subplots_adjust(hspace=.7)
-    fig.savefig(plot_name)
+    fig.savefig(plot_name, format = 'eps')
 
 ################################################################################
 #                                     PCA                                      #
