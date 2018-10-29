@@ -89,7 +89,7 @@ With the same logic, if RemoveHCColumns_FLAG is set to false, highly correlated 
 ## General information
 <ul>
   <li> Notice that the submission file will be saved in your current folder (the folder containing the run.py file). </li>
-  <li> In order to run the file run.py, please use the terminal and type the command "python run.py" </li>
+  <li> In order to run the file run.py, please use the terminal and type the command "python run.py". </li>
 </ul>
 
 
