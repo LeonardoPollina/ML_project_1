@@ -34,7 +34,7 @@ All the functions needed to apply Netwon method for classification.
 All the additional functions which can be used to manipulate data, such as subsampling of data, polynomial expansion, counting and replacing of a chosen invalid value, applying the sigmoid function etc.
   <li> <b> PCA </b> </li>
 Functions needed to compute PCA. <br>
-Notice that this preprocessing step for feature selection was not used because final results were not satisfactory. 
+Notice that this preprocessing step of feature selection was not used because final results were not satisfactory. 
 </ul>
 
 ## proj1_helpers.py
