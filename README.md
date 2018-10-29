@@ -50,8 +50,18 @@ Function to create the .csv file containing the final labels to submit.
 </ol>
 
 ## run.py
-This Python file contains the code necessary to 
+This Python file contains the code used to implement all the different steps of our best (final) model, that is Ridge Regression. <br>
+The code is divided in subsections: 
+  <ol>
+  <li> Importation of important libraries and other .py files. This includes the numpy and matplotlib.pyplot libraries and the file implementations.py. This gives access to all the necessary functions. </li>
+  <li> </li>
+  <li> </li>
+</ol>
 
+
+
+## General Information
+Please, notice that all the code included in this project was written using Python Version 3.7 and only NumPy (version ????) and Matplolib (for visualization tasks) libraries were employed.
 
 <p align="right"/>
 Group members: <i> Nicola Ischia, Marion Perier, Leonardo Pollina. <i>
