@@ -1,3 +1,6 @@
+print('Machine Learning (CS-433) project 1.\n')
+print('Group members: Nicola Ischia, Marion Perier, Leonardo Pollina.\n')
+
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
@@ -35,12 +38,11 @@ if ReplaceToZero_FLAG:
 
 # Finally, note that we keep the mean and the std of the train set. These parameters will be used to perform the standardization  # in the prediction phase (on the test set). 
 
-print('Performing division in three sub-sets (depending on the number of jets).')
-
 idxs = indices_jet_division(input_data)
 
 x0, x1, x2 = data_split_with_jet_division(input_data,idxs)
 y0, y1, y2 = data_split_with_jet_division(yb,idxs)
+print('Division in three sub-sets (depending on the number of jets) performed.')
 
 # Only the first 2 subsets have const columns.
 x0, idx_constants_removed0 = removeConstantColumns(x0)
@@ -80,6 +82,7 @@ lambdas1 = np.linspace(1e-5,0.0001,25)
 degrees2 = np.arange(10,17)
 lambdas2 = np.linspace(1e-5,0.01,25) 
 
+print('Looking for best hyperparameters using cross-validation ...');
 best_lambda_acc0, best_degree_acc0, accuracy0 = grid_search_hyperparam_with_RidgeCV(y0, x0, lambdas0, degrees0)
 
 best_lambda_acc1, best_degree_acc1, accuracy1 = grid_search_hyperparam_with_RidgeCV(y1, x1, lambdas1, degrees1)
@@ -112,7 +115,7 @@ best_w_acc1,_ = ridge_regression(y1,x1_augmented,best_lambda_acc1[0])
 x2_augmented = build_poly(x2, int(best_degree_acc2[0]))
 best_w_acc2,_ = ridge_regression(y2,x2_augmented,best_lambda_acc2[0])
 
-# Visualization of the best (degree,lambda) combination in the case of the subset with 1 jet
+# Visualization of the best (degree,lambda) combination in the case of the subset with 1 jet.
 plot_grid_search(lambdas1, degrees1, accuracy1, 'grid_search.eps')
 
 ##############################################################################
@@ -125,7 +128,7 @@ _, test_data, ids_test = load_csv_data("../data/test.csv", sub_sample=False)
 num_tests = test_data.shape[0]
 print('Test data have been loaded.')
 
-print('Repeating the preprocessing steps on the test set')
+print('Repeating the preprocessing steps on the test set.')
 
 # Replacing invalid values to 0.
 if ReplaceToZero_FLAG:
@@ -135,7 +138,7 @@ if ReplaceToZero_FLAG:
 # Jets division.
 idxsTest = indices_jet_division(test_data)
 x0Test, x1Test, x2Test = data_split_with_jet_division(test_data,idxsTest)
-print('Division in subset performed.')
+print('Division in subsets performed.')
 
 # Remove constant columns.
 x0Test = np.delete(x0Test, idx_constants_removed0, axis=1)
@@ -182,6 +185,6 @@ print('Final prediction performed.')
 create_csv_submission(ids_test, y_pred, 'FinalModel_WithoutHCColumns.csv')
 print('The .csv file containing our final prediction has been created.')
 print('You can find it in the folder containing the run.py file!')
-print('Group members: Nicola Ischia, Marion Perier, Leonardo Pollina.')
+
 
 
