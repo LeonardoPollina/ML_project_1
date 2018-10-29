@@ -29,7 +29,7 @@ All the functions required to compute the gradient of different loss functions. 
 Functions for labels prediciton for logistic regression (classification model). In this case the labels are {0,1} and thus, the threshold to perform classification is set to 0.5 . <br>
 Notice that functions for labels prediction for regression models are contained in 'proj1_helpers.py'.
   <li> <b> Newton functions </b> </li> 
-All the functions needed to apply Netwon method for classification. 
+All the functions needed to apply Netwon iterative method for logistic classification. 
   <li> <b> Useful functions </b> </li> 
 All the additional functions which can be used to manipulate data, such as subsampling of data, polynomial expansion, counting and replacing of a chosen invalid value, applying the sigmoid function etc.
   <li> <b> PCA </b> </li>
